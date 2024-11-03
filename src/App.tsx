@@ -1,11 +1,11 @@
 import React from "react";
-import AdventureGenerator from "./components/AdventureGenerator";
+import LaughAndLearn from "./components/LaughAndLearn";
 
 const App: React.FC = () => {
   return (
     <div>
-      <h1>Pet Adventure Generator</h1>
-      <AdventureGenerator />
+      <h1 style={{ textAlign: "center", margin: "1rem 0" }}>Laugh & Learn</h1>
+      <LaughAndLearn />
     </div>
   );
 };

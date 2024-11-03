@@ -1,12 +1,9 @@
-export interface PetImage {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
+export interface Advice {
+  slip: {
+    advice: string;
+  };
 }
 
-export interface Location {
-  name: string;
-  address: string;
-  photoUrl?: string;
+export interface FunnyPicture {
+  url: string;
 }
