@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useFetch } from "../hooks/useFetch";
 import AdventureCard from "./AdventureCard";
 import { PetImage, Location } from "../types";
 
 const CAT_API_URL = `https://api.thecatapi.com/v1/images/search?limit=1&api_key=${
   import.meta.env.VITE_CAT_API_KEY
 }`;
-
 const LOCATION_API_URL = `https://api.foursquare.com/v3/places/search?near=Paris&limit=1`;
 
 const AdventureGenerator: React.FC = () => {
@@ -20,10 +18,11 @@ const AdventureGenerator: React.FC = () => {
     const fetchPetImage = async () => {
       try {
         const response = await fetch(CAT_API_URL);
+        if (!response.ok) throw new Error("Failed to fetch pet image");
         const data: PetImage[] = await response.json();
         setPetImage(data[0]);
-      } catch (error) {
-        setError("Failed to fetch pet image");
+      } catch (error: unknown) {
+        setError((error as Error).message || "Failed to fetch pet image");
       }
     };
 
@@ -39,6 +38,7 @@ const AdventureGenerator: React.FC = () => {
             Authorization: `Bearer ${import.meta.env.VITE_FOURSQUARE_API_KEY}`,
           },
         });
+        if (!response.ok) throw new Error("Failed to fetch location");
         const data = await response.json();
 
         if (data.results && data.results.length > 0) {
@@ -51,9 +51,11 @@ const AdventureGenerator: React.FC = () => {
               "bg_64" +
               loc.categories?.[0]?.icon?.suffix,
           });
+        } else {
+          throw new Error("No locations found");
         }
-      } catch (error) {
-        setError("Failed to fetch location");
+      } catch (error: unknown) {
+        setError((error as Error).message || "Failed to fetch location");
       } finally {
         setLoading(false);
       }
